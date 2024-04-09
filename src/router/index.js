@@ -1,4 +1,4 @@
-import { createMemoryHistory, createRouter } from 'vue-router'
+import {createMemoryHistory, createRouter} from 'vue-router'
 
 import CreateStudent from '../pages/CreateStudent.vue'
 import SearchStudent from '../pages/SearchStudent.vue'
@@ -23,6 +23,8 @@ const routes = [
 
 const router = createRouter({
   history: createMemoryHistory(),
+  // history: createWebHistory(),
+  // history: createWebHistory(process.env.BASE_URL),
   routes,
 })
 
