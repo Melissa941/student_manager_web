@@ -42,15 +42,15 @@
               item-value="studentNumber"
               @update:options="loadItems">
             <template v-slot:[`item.fullName`]="{item}">
-              {{item.firstName}} {{item.lastName}}
+              {{ item.firstName }} {{ item.lastName }}
             </template>
             <template v-slot:[`item.currentScore`]="{item}">
-              {{item.currentScore}}%
+              {{ item.currentScore }}%
             </template>
             <template v-slot:[`item.averageScore`]="{item}">
-              {{item.averageScore}}%
+              {{ item.averageScore }}%
             </template>
-            <template v-slot:[`item.action`] = "{item}">
+            <template v-slot:[`item.action`]="{item}">
               <v-btn @click="toggleAddScore(item)" color="primary">Add Score</v-btn>
               <v-btn icon="mdi-account" color="primary" variant="text"></v-btn>
               <v-btn icon="mdi-pencil-box-outline" variant="text" color="primary"></v-btn>
@@ -94,7 +94,7 @@
               <v-btn block text="Cancel" variant="tonal" color="primary" @click="addScoreDialog = false"></v-btn>
             </v-col>
             <v-col cols="6">
-              <v-btn block text="Save" color="primary" @click="addScoreDialog = false" variant="elevated"></v-btn>
+              <v-btn block text="Save" color="primary" @click="addScore(studentNumber,score)" variant="elevated"></v-btn>
             </v-col>
           </v-card-actions>
         </v-card>
@@ -133,40 +133,7 @@ export default {
       {title: "Action", key: "action", align: "start"},
     ];
     let loading = ref(true);
-    let students = ref([
-      {
-        studentNumber: '238111',
-        fullName: 'Melisa Ledwaba',
-        cellphoneNo: '075 6789 909',
-        email: 'melisaledwaba@students.ac.za',
-        currentScore: '99%',
-        averageScore: '100%'
-      },
-      {
-        studentNumber: '238111',
-        fullName: 'Melisa Ledwaba',
-        cellphoneNo: '075 6789 909',
-        email: 'melisaledwaba@students.ac.za',
-        currentScore: '99%',
-        averageScore: '100%'
-      },
-      {
-        studentNumber: '238111',
-        fullName: 'Melisa Ledwaba',
-        cellphoneNo: '075 6789 909',
-        email: 'melisaledwaba@students.ac.za',
-        currentScore: '99%',
-        averageScore: '100%'
-      },
-      {
-        studentNumber: '238111',
-        fullName: 'Melisa Ledwaba',
-        cellphoneNo: '075 6789 909',
-        email: 'melisaledwaba@students.ac.za',
-        currentScore: '99%',
-        averageScore: '100%'
-      }
-    ])
+    let students = ref([])
     let totalItems = ref(students.value.length);
     let addScoreDialog = ref(false)
     let alert = ref({
@@ -175,6 +142,7 @@ export default {
     })
     let score = ref(null)
     let addFullName = ref(null)
+    let studentNumber = ref(null)
 
     return {
       searchType,
@@ -188,10 +156,12 @@ export default {
       addScoreDialog,
       alert,
       score,
+      studentNumber,
       addFullName
     };
   },
   methods: {
+
     async getStudents() {
       const response = await axios.get("/api/students");
       this.students = response.data;
@@ -217,8 +187,7 @@ export default {
             .then((response) => {
               this.students = response.data
             })
-      }
-      else if (this.searchType === "Email Address") {
+      } else if (this.searchType === "Email Address") {
         await axios.get("/api/students/get/email/" + this.searchCriteria)
             .then((response) => {
               this.students = response.data
@@ -226,16 +195,36 @@ export default {
       }
       this.loading = false
     },
+
     clearSearch() {
       this.searchType = null;
       this.searchCriteria = null;
     },
-    toggleAddScore(item){
+
+    async addScore(studentNumber, score){
+      await axios.post("/api/students/score/" + studentNumber, {score: score})
+          .then((response) => {
+            console.log(response)
+            if(response.data == "Student score successfully Added!"){
+              this.alert.type='success'
+              this.alert.message="Student score successfully Added!"
+            }else{
+              this.alert.type='error'
+              this.alert.message="Could not add score"
+            }
+          })
+      this.getStudents();
+      this.addScoreDialog = false
+    },
+
+    toggleAddScore(item) {
       console.log(item)
-      this.addFullName = item.firstName +" "+ item.lastName
+      this.addFullName = item.firstName + " " + item.lastName
       this.addScoreDialog = true
+      this.studentNumber = item.studentNumber
     }
   },
+
   beforeMount() {
     this.getStudents();
   },

@@ -2,83 +2,83 @@
   <v-col cols="12">
     <v-row>
       <v-col cols="12">
-      <span>Create New Student</span>
-    </v-col>
+        <span>Create New Student</span>
+      </v-col>
       <v-col cols="12" v-if="alert.message != null">
         <v-alert
-        :text="alert.message"
-        :type="alert.type">
+            :text="alert.message"
+            :type="alert.type">
         </v-alert>
       </v-col>
-      <v-col cols="6">
-        <v-text-field
-          label="First Name*"
-          v-model="firstName"
-          variant="outlined"
-          color="primary">
-        </v-text-field>
-      </v-col>
-      <v-col cols="6">
-        <v-text-field
-          label="Last Name*"
-          v-model="lastName"
-          variant="outlined"
-          color="primary">
-        </v-text-field>
-      </v-col>
-      <v-col cols="6">
-        <v-text-field
-          label="Mobile Number*"
-          type="number"
-          v-model="cellphoneNumber"
-          variant="outlined"
-          color="primary">
-        </v-text-field>
-      </v-col>
-      <v-col cols="6">
-        <v-text-field
-          label="Email Address*"
-          v-model="email"
-          variant="outlined"
-          color="primary">
-        </v-text-field>
-      </v-col>
-      <v-col cols="6">
-        <v-text-field
-          label="Date of Birth*"
-          type="date"
-          v-model="dateOfBirth"
-          variant="outlined"
-          color="primary">
-        </v-text-field>
-      </v-col>
-      <v-col cols="6">
-        <v-text-field
-          label="Current Score"
-          suffix="%"
-          type="number"
-          v-model="currentScore"
-          variant="outlined"
-          color="primary">
-        </v-text-field>
-      </v-col>
-      <v-col  cols="6">
-        <v-btn block color="primary" variant="tonal">
-          cancel
-        </v-btn>
-      </v-col>
-      <v-col  cols="6">
-        <v-btn block color="primary" @click="createStudent">
-          save
-        </v-btn>
-      </v-col>
+        <v-col cols="6">
+          <v-text-field
+              label="First Name*"
+              v-model="firstName"
+              variant="outlined"
+              color="primary">
+          </v-text-field>
+        </v-col>
+        <v-col cols="6">
+          <v-text-field
+              label="Last Name*"
+              v-model="lastName"
+              variant="outlined"
+              color="primary">
+          </v-text-field>
+        </v-col>
+        <v-col cols="6">
+          <v-text-field
+              label="Mobile Number*"
+              type="number"
+              v-model="cellphoneNumber"
+              variant="outlined"
+              color="primary">
+          </v-text-field>
+        </v-col>
+        <v-col cols="6">
+          <v-text-field
+              label="Email Address*"
+              v-model="email"
+              variant="outlined"
+              color="primary">
+          </v-text-field>
+        </v-col>
+        <v-col cols="6">
+          <v-text-field
+              label="Date of Birth*"
+              type="date"
+              v-model="dateOfBirth"
+              variant="outlined"
+              color="primary">
+          </v-text-field>
+        </v-col>
+        <v-col cols="6">
+          <v-text-field
+              label="Current Score"
+              suffix="%"
+              type="number"
+              v-model="currentScore"
+              variant="outlined"
+              color="primary">
+          </v-text-field>
+        </v-col>
+        <v-col cols="6">
+          <v-btn block color="primary" variant="tonal">
+            cancel
+          </v-btn>
+        </v-col>
+        <v-col cols="6">
+          <v-btn block color="primary" @click="createStudent">
+            save
+          </v-btn>
+        </v-col>
     </v-row>
   </v-col>
 </template>
 
 <script>
-import {ref} from 'vue'
 import axios from "axios";
+import {ref} from "vue";
 
 export default {
   setup() {
@@ -106,7 +106,6 @@ export default {
   methods: {
     async createStudent() {
       const response = await axios.post("/api/students", {
-        studentNumber: "KTL",
         firstName: this.firstName,
         lastName: this.lastName,
         cellphoneNumber: this.cellphoneNumber,
